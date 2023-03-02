@@ -1,0 +1,40 @@
+---
+- name: Deploy Flask App in Docker Container
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        update_cache: yes
+        state: present
+        name: docker.io
+
+    - name: Start Docker Service
+      service:
+        name: docker
+        state: started
+
+    - command: "echo {{ ansible_python_interpreter }}"
+      register: out
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+    - debug:
+        var: out.stdout
+    - name: Build Docker Image
+      docker_image:
+        name: myflaskapp
+        source: build
+        build:
+          path: /home/smoon/git_repo/STEPHEN_CHALLENGE
+        state: present
+
+    - name: Run Docker Container
+      docker_container:
+        name: myflaskapp
+        image: myflaskapp
+        state: started
+        ports:
+          - "80:80"
