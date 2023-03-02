@@ -15,6 +15,7 @@ class ValidateCreditCard:
     def __init__(self, total_credit_cards: int, credit_card_num: str) -> None:
         self.total_credit_cards = total_credit_cards
         self.credit_card_num = credit_card_num
+        self.digits_only = re.sub(r"\D", "", self.credit_card_num)
         ValidateCreditCard.credit_card_nums.append(self.credit_card_num)
 
     def must_only_consist_of_digits_zero_to_nine(self):
@@ -22,6 +23,13 @@ class ValidateCreditCard:
         if len(digits_only) == 16:  # credit card number length is required to be 16
             return True
         return False
+    
+    def four_consecutive_repeats(self):
+        for each_digit in self.digits_only:
+            four_repeat = each_digit*4
+            if four_repeat in self.digits_only:
+                return False
+        return True
 
     def must_start_with_four_five_six(self):
         m = ValidateCreditCard.re_must_start_with_four_five_six.match(
@@ -61,28 +69,30 @@ def validate_input(total_credit_cards: str, debug: bool = False) -> bool:
         return False
 
 
-def read_credit_cards(total_credit_cards: str) -> list:
+def read_credit_cards(total_credit_cards: str, debug: bool = False) -> list:
     InputCreditCards = namedtuple('InputCreditCards',
                                   ['line',
                                    'space',
                                    'underscore',
                                    'hyphen',
                                    'all_zero_nine',
-                                   'start_with_456'])
+                                   'start_with_456',
+                                   'four_consecutive_repeats'])
 
-    cc_numbers = ["4123456789123456",
-                  "5123-4567-8912-3456",
-                  "61234-567-8912-3456",
-                  "3123356789123456",
-                  "5133-3367-8912-3456",
-                  "5123 - 3567 - 8912 - 3456",
-                  "4123 - 3567 - 8912 -_3456",
-                  "6123 - 3567 - 8912 - 73456"]
-    cc_iterator = iter(cc_numbers)
+    # cc_numbers = ["4123456789123456",
+    #               "5123-4567-8912-3456",
+    #               "61234-567-8912-3456",
+    #               "3123356789123456",
+    #               "5133-3367-8912-3456",
+    #               "5123 - 3567 - 8912 - 3456",
+    #               "4123 - 3567 - 8912 -_3456",
+    #               "44244x4424442444",
+    #               "6123 - 3567 - 8912 - 73456"]
+    # cc_iterator = iter(cc_numbers)
     for i in range(int(total_credit_cards)):
         try:
-            # user_input = input()
-            user_input = next(cc_iterator)
+            user_input = input()
+            # user_input = next(cc_iterator)
             if not user_input:
                 break
 
@@ -95,18 +105,33 @@ def read_credit_cards(total_credit_cards: str) -> list:
                     user_input.strip()),  # true if no underscore
                 hyphen=vcc.find_position_of_hyphen(),
                 all_zero_nine=vcc.must_only_consist_of_digits_zero_to_nine(),
-                start_with_456=vcc.must_start_with_four_five_six()))
+                start_with_456=vcc.must_start_with_four_five_six(),
+                four_consecutive_repeats=vcc.four_consecutive_repeats()))
 
         except EOFError:
             break
 
     for each_tuple in vcc.all_namedtuples:
-        print(each_tuple.line, end=",")
-        print(each_tuple.space, end=",")
-        print(each_tuple.underscore, end=",")
-        print(each_tuple.hyphen, end=",")
-        print(each_tuple.all_zero_nine, end=",")
-        print(each_tuple.start_with_456, end="\n")
+        if debug:
+            print(each_tuple.line, end=",")
+            print(each_tuple.space, end=",")
+            print(each_tuple.underscore, end=",")
+            print(each_tuple.hyphen, end=",")
+            print(each_tuple.all_zero_nine, end=",")
+            print(each_tuple.start_with_456, end=",")
+            print(each_tuple.four_consecutive_repeats, end="\n")
+        if each_tuple.space and \
+            each_tuple.underscore and \
+            each_tuple.hyphen and \
+            each_tuple.all_zero_nine and \
+            each_tuple.start_with_456 and \
+            each_tuple.four_consecutive_repeats:
+            
+            if debug: print(each_tuple.line, end=":")
+            print("Valid")
+        else:
+            if debug: print(each_tuple.line, end=":")
+            print("Invalid")
 
 
 def main() -> None:
