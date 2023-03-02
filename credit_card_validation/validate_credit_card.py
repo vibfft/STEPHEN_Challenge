@@ -81,20 +81,9 @@ def read_credit_cards(total_credit_cards: str, debug: bool = False) -> list:
                                    'start_with_456',
                                    'four_consecutive_repeats'])
 
-    # cc_numbers = ["4123456789123456",
-    #               "5123-4567-8912-3456",
-    #               "61234-567-8912-3456",
-    #               "3123356789123456",
-    #               "5133-3367-8912-3456",
-    #               "5123 - 3567 - 8912 - 3456",
-    #               "4123 - 3567 - 8912 -_3456",
-    #               "44244x4424442444",
-    #               "6123 - 3567 - 8912 - 73456"]
-    # cc_iterator = iter(cc_numbers)
     for i in range(int(total_credit_cards)):
         try:
             user_input = input()
-            # user_input = next(cc_iterator)
             if not user_input:
                 break
 
