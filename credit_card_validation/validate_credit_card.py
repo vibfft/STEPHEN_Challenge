@@ -62,12 +62,12 @@ def validate_input(total_credit_cards: str, debug: bool = False) -> bool:
         else:
             if debug:
                 print(f"""\t{total_credit_cards} is an invalid number of credit cards
-                \tPlease enter an integer number in the range of 1 < N < 100""")
+                \tPlease enter an integer number in the range of 0 < N < 100""")
             return False
     else:
         if debug:
             print(f"""\t{total_credit_cards} is not a valid digit.
-            \tPlease enter an integer number in the range of 1 < N < 100""")
+            \tPlease enter an integer number in the range of 0 < N < 100""")
         return False
 
 
