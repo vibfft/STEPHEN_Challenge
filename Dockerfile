@@ -22,7 +22,7 @@ EXPOSE 443
 
 # Define environment variables
 ENV FLASK_APP=hello_world.py
-ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_HOST=127.0.0.1
 ENV FLASK_RUN_PORT=80
 
 USER ${SVC_USER}
