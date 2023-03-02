@@ -19,27 +19,27 @@ class ValidateCreditCard:
         self.digits_only = re.sub(r"\D", "", self.credit_card_num)
         ValidateCreditCard.credit_card_nums.append(self.credit_card_num)
 
-    def must_only_consist_of_digits_zero_to_nine(self):
+    def must_only_consist_of_digits_zero_to_nine(self) -> bool:
         digits_only = re.sub(r"\D", "", self.credit_card_num)
         if len(digits_only) == 16:  # credit card number length is required to be 16
             return True
         return False
 
-    def four_consecutive_repeats(self):
+    def four_consecutive_repeats(self) -> bool:
         for each_digit in self.digits_only:
             four_repeat = each_digit*4
             if four_repeat in self.digits_only:
                 return False
         return True
 
-    def must_start_with_four_five_six(self):
+    def must_start_with_four_five_six(self) -> bool:
         m = ValidateCreditCard.re_must_start_with_four_five_six.match(
             self.credit_card_num[0])
         if m:
             return True
         return False
 
-    def find_position_of_hyphen(self):
+    def find_position_of_hyphen(self) -> bool:
         matched_pos_list = []
         for match in re.finditer('-', self.credit_card_num):
             matched_pos_list.append(match.start())
@@ -71,7 +71,7 @@ def validate_input(total_credit_cards: str, debug: bool = False) -> bool:
         return False
 
 
-def read_credit_cards(total_credit_cards: str, debug: bool = False) -> list:
+def read_credit_cards(total_credit_cards: str, debug: bool = False) -> None:
     InputCreditCards = namedtuple('InputCreditCards',
                                   ['line',
                                    'space',
