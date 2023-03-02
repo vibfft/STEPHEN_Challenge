@@ -3,6 +3,8 @@
   hosts: localhost
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    #docker_image_name: my_flask_app
+    #docker_container_name: my_flask_container
   become: true
 
   tasks:
@@ -20,7 +22,7 @@
     - command: "echo {{ ansible_python_interpreter }}"
       register: out
       vars:
-        ansible_python_interpreter: /usr/bin/python3
+        ansible_python_interpreter: /home/smoon/git_repo/STEPHEN_Challenge/venv/bin/python3
     - debug:
         var: out.stdout
     - name: Build Docker Image
