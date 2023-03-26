@@ -18,7 +18,7 @@ def pair_sum(arrayList: list, sum: int) -> None:
         elif tmp_sum > sum:
             high -= 1
         elif tmp_sum < sum:
-            low -= 1
+            low += 1
     return False
 
 # one loop: O(n)
